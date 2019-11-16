@@ -23,7 +23,7 @@ int main(){
         _exit(1);
     case 0:
         printf("Child pid = %i, pid = %i\n",getpid(),pid);
-        break;
+        _exit(ev);
     default:
         waitpid(pid,0,0);
         printf("Parent pid = %i, pid = %i, exit status = %d\n",getpid(),pid,WEXITSTATUS(ev));
