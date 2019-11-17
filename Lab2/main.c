@@ -25,9 +25,9 @@ int main()
         struct passwd pswd;
         struct group usr_gr;
         
-        while ((dir = readdir(curr_dir)) != NULL) {
+        while ((dir = readdir(curr_dir)) != NULL) 
             print_file_info(&stat_buf,&pswd,&usr_gr,dir);
-        }
+
         closedir(curr_dir);
     }
     return 0;
