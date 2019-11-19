@@ -7,13 +7,13 @@
 void at_exit_handler(void);
 void on_exit_handler(int,void*);
 int atexit(void(*func)(void));
-int on_exit(void(*func)(int,void*),void *arg);
+int on_exit(void(*func)(int,void*),void*);
 
 
 int main(){
     pid_t pid = fork();
     atexit(at_exit_handler);
-    on_exit(on_exit_handler,(void*)pid);
+    on_exit(on_exit_handler,0);
     int ev = 0;
 
     switch (pid)
