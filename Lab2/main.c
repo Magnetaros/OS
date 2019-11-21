@@ -1,14 +1,14 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<dirent.h>
-#include<sys/dir.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<pwd.h>
-#include<grp.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/dir.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 
 
 void print_file_info(struct stat*,struct passwd*,struct group*,struct dirent*);
@@ -28,7 +28,7 @@ int main()
         
         while ((dir = readdir(curr_dir)) != NULL)
 	{	
-            print_file_info(&stat_buf,&pswd,&usr_gr,dir);
+            print_file_info(&stat_buf, &pswd, &usr_gr,dir);
 	    count++;
 	}
 	printf("total %u\n", count);
@@ -45,10 +45,10 @@ void print_file_info(struct stat *stat_buf, struct passwd *pswd, struct group *u
     char *mask = (char*)malloc(10 * sizeof(char));
     strcpy(mask, "----------");
 
-    stat(dir->d_name,stat_buf);
+    stat(dir->d_name, stat_buf);
     pswd = getpwuid(stat_buf->st_uid);
     usr_gr = getgrgid(stat_buf->st_gid);
-    mask_to_str(stat_buf->st_mode,mask);
+    mask_to_str(stat_buf->st_mode, mask);
     f_time = localtime(&stat_buf->st_mtime);
     strftime(time_str, 80, "%b %d %H:%M", f_time);
 
