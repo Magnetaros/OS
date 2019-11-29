@@ -12,9 +12,9 @@ int on_exit(void(*func)(int,void*),void*);
 
 int main(){
     pid_t pid = fork();
+    int ev = 0;
     atexit(at_exit_handler);
     on_exit(on_exit_handler, 0);
-    int ev = 0;
 
     switch (pid)
     {
@@ -22,11 +22,11 @@ int main(){
         perror("Forked!!!\n");
         _exit(1);
     case 0:
-        printf("Child pid = %i, pid = %i\n", getpid(), pid);
-        _exit(ev);
+        printf("Child pid = %i, parent pid = %i\n", getpid(), getppid());
+        break;
     default:
         waitpid(pid,0,0);
-        printf("Parent pid = %i, pid = %i, exit status = %d\n", getpid(), pid, WEXITSTATUS(ev));
+        printf("Parent pid = %i, exit status = %d\n", getpid(), WEXITSTATUS(ev));
         break;
     }
     return 0;
@@ -34,9 +34,9 @@ int main(){
 
 
 void at_exit_handler(void){
-    printf("atexit event pid = %d\n", getpid());
+    printf("atexit handler pid = %d\n", getpid());
 }
 
 void on_exit_handler(int exit_status,void *arg){
-    printf("Process:exit code = %d , arg = %ld\n", WEXITSTATUS(exit_status), (long)arg);
+    printf("on_exit handler : exit code = %d , arg = %ld\n", WEXITSTATUS(exit_status), (long)arg);
 }
