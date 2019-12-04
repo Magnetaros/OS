@@ -14,7 +14,6 @@ int main(void)
 {
     char in_str[100];
     size_t buffer_size;
-    time_t p_time;
     pid_t pid;
 
     signal(SIGINT, INT_handler);
@@ -32,7 +31,7 @@ int main(void)
         if(pid > 0)
         {
             pid = getpid();
-            p_time = time(0);
+            time_t p_time = time(0);
 
             sprintf(in_str, "pid = %d, time : %s", pid, ctime(&p_time));
             buffer_size = strlen(in_str);
@@ -42,10 +41,10 @@ int main(void)
         }
         else if(pid == 0)
         {
-            p_time = time(0);   
+            time_t c_time = time(0);   
             read(p_pipe[0], in_str, 100 * sizeof(char));
             printf("Result:\n\t parent  %s", in_str);
-            printf("\t child time : %s\n", ctime(&p_time));
+            printf("\t child time : %s\n", ctime(&c_time));
             sleep(1);
         }
         else
