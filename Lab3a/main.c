@@ -6,8 +6,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-void INT_handler(int);
-
 static int p_pipe[2];
 
 int main(void)
@@ -15,8 +13,6 @@ int main(void)
     char in_str[100];
     size_t buffer_size;
     pid_t pid;
-
-    signal(SIGINT, INT_handler);
 
     if(pipe(p_pipe) < 0)
     {
@@ -54,12 +50,4 @@ int main(void)
         }
     }
 
-}
-
-void INT_handler(int signal)
-{
-    printf("Closing pipes!\n");
-    close(p_pipe[0]);
-	close(p_pipe[1]);
-	exit(signal);
 }
