@@ -21,17 +21,17 @@ int main()
     curr_dir = opendir(".");
 
     if (curr_dir) {
-	unsigned int count = 0;
+        unsigned int count = 0;
         struct stat stat_buf;
         struct passwd pswd;
         struct group usr_gr;
-        
+            
         while ((dir = readdir(curr_dir)) != NULL)
-	{	
+        {	
             print_file_info(&stat_buf, &pswd, &usr_gr,dir);
-	    count++;
-	}
-	printf("total %u\n", count);
+            count++;
+        }
+        printf("total %u\n", count);
 
         closedir(curr_dir);
     }
@@ -45,21 +45,29 @@ void print_file_info(struct stat *stat_buf, struct passwd *pswd, struct group *u
     char *mask = (char*)malloc(10 * sizeof(char));
     strcpy(mask, "----------");
 
-    stat(dir->d_name, stat_buf);
+    lstat(dir->d_name, stat_buf);
     pswd = getpwuid(stat_buf->st_uid);
     usr_gr = getgrgid(stat_buf->st_gid);
     mask_to_str(stat_buf->st_mode, mask);
     f_time = localtime(&stat_buf->st_mtime);
     strftime(time_str, 80, "%b %d %H:%M", f_time);
 
-    printf("%s %lu %s %s %4ld %s %s\n", mask, stat_buf->st_nlink,
+    printf("%s %lu %s %s %5ld %s %s\n", mask, stat_buf->st_nlink,
 		    pswd->pw_name, usr_gr->gr_name, stat_buf->st_size, time_str, dir->d_name);
     free(mask);
 }
 
 void mask_to_str(__mode_t mask,char *result)
 {
-    if((mask & S_IFDIR) != 0) *(result + 0) = 'd';
+    if((mask & S_IFDIR) != 0)
+        *(result + 0) = 'd';
+    else if((mask & S_IFIFO) != 0)
+        *(result + 0) = 'p';
+    else if((mask & S_IFBLK) != 0)
+        *(result + 0) = 'b';
+    else if((mask & S_IFCHR) != 0)
+        *(result + 0) = 'c';
+    
     if((mask & S_IRUSR) != 0) *(result + 1) = 'r';
     if((mask & S_IWUSR) != 0) *(result + 2) = 'w';
     if((mask & S_IXUSR) != 0) *(result + 3) = 'x';
