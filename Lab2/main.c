@@ -12,7 +12,7 @@
 
 
 void print_file_info(struct stat*,struct passwd*,struct group*,struct dirent*);
-void mask_to_str(__mode_t,char*);
+void mask_to_str(mode_t,char*);
 
 int main()
 {
@@ -52,12 +52,12 @@ void print_file_info(struct stat *stat_buf, struct passwd *pswd, struct group *u
     f_time = localtime(&stat_buf->st_mtime);
     strftime(time_str, 80, "%b %d %H:%M", f_time);
 
-    printf("%s %lu %s %s %5ld %s %s\n", mask, stat_buf->st_nlink,
+    printf("%s %ld %s %s %5ld %s %s\n", mask, stat_buf->st_nlink,
 		    pswd->pw_name, usr_gr->gr_name, stat_buf->st_size, time_str, dir->d_name);
     free(mask);
 }
 
-void mask_to_str(__mode_t mask,char *result)
+void mask_to_str(mode_t mask,char *result)
 {
     if((mask & S_IFDIR) != 0)
         *(result + 0) = 'd';
