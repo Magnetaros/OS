@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
@@ -6,9 +7,6 @@
 
 void at_exit_handler(void);
 void on_exit_handler(int,void*);
-int atexit(void(*func)(void));
-int on_exit(void(*func)(int,void*),void*);
-
 
 int main(){
     pid_t pid = fork();
