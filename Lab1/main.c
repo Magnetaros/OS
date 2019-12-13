@@ -6,13 +6,10 @@
 #include <sys/types.h>
 
 void at_exit_handler(void);
-void on_exit_handler(int,void*);
 
 int main(){
     pid_t pid = fork();
-    int ev = 0;
     atexit(at_exit_handler);
-    on_exit(on_exit_handler, 0);
 
     switch (pid)
     {
@@ -24,7 +21,7 @@ int main(){
         break;
     default:
         waitpid(pid,0,0);
-        printf("Parent pid = %i, exit status = %d\n", getpid(), WEXITSTATUS(ev));
+        printf("Parent pid = %i\n", getpid());
         break;
     }
     return 0;
@@ -33,8 +30,4 @@ int main(){
 
 void at_exit_handler(void){
     printf("atexit handler pid = %d\n", getpid());
-}
-
-void on_exit_handler(int exit_status,void *arg){
-    printf("on_exit handler : exit code = %d , arg = %ld\n", WEXITSTATUS(exit_status), (long)arg);
 }
