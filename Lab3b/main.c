@@ -12,8 +12,10 @@ int main()
     int r_fifo;
     int w_fifo;
 
-    if(mknod(path, 0777, 0) < 0)
-        printf("FIFO ERR\n");
+    if(mkfifo(path, 0777 | O_CREAT) < 0) {
+        perror("FIFO ERR: ");
+        exit(-1);
+    }
     else
         printf("FIFO CREATED\n");
     
