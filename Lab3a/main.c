@@ -8,7 +8,7 @@
 
 static int p_pipe[2];
 
-int main(void)
+int main()
 {
     char in_str[100];
     size_t buffer_size;
@@ -37,7 +37,7 @@ int main(void)
         }
         else if(pid == 0)
         {
-            time_t c_time = time(0);   
+            time_t c_time = time(NULL);   
             read(p_pipe[0], in_str, 100 * sizeof(char));
             printf("Result:\n\t parent  %s", in_str);
             printf("\t child time : %s\n", ctime(&c_time));
@@ -49,5 +49,4 @@ int main(void)
             exit(1);
         }
     }
-
 }
