@@ -52,8 +52,8 @@ void print_file_info(struct stat *stat_buf, struct passwd *pswd, struct group *u
     f_time = localtime(&stat_buf->st_mtime);
     strftime(time_str, 80, "%b %d %H:%M", f_time);
 
-    printf("%s %ld %s %s %5ld %s %s\n", mask, stat_buf->st_nlink,
-		    pswd->pw_name, usr_gr->gr_name, stat_buf->st_size, time_str, dir->d_name);
+    printf("%s %u %s %s %5d %s %s\n", mask, (unsigned short)stat_buf->st_nlink,
+		    pswd->pw_name, usr_gr->gr_name, (int)stat_buf->st_size, time_str, dir->d_name);
     free(mask);
 }
 
