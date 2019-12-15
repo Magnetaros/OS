@@ -11,7 +11,6 @@ int main(){
 	int shmem;
 	char *path = "./shmem";
 	char *output;
-	int count = 100;
 
 	key = ftok(path, 'S');
 	if(key < 0)
@@ -25,8 +24,7 @@ int main(){
 	while(strcmp(output, "END") != 0)
 	{
 		printf("%s", output);
-		sleep(1);
-		count--;	
+		sleep(1);	
 	}
 	printf("Closing Shared memory\n");
 	shmdt(output);
