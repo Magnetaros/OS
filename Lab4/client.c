@@ -9,7 +9,7 @@
 int main(){
 	key_t key;
 	int shmem;
-	char *path = "./shmem";
+	char *path = "shmem";
 	char *output;
 
 	key = ftok(path, 'S');
