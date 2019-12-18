@@ -1,3 +1,3 @@
 main:
-	clang producer.c -Weverything -o producer
-	clang consumer.c -Weverything -o consumer
+	clang server.c -Weverything -o server
+	clang client.c -Weverything -o client
