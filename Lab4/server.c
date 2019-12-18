@@ -14,7 +14,7 @@ int main()
 	time_t timer;
 	int shmem;
 	char *input;
-	char *path = "./shmem";
+	char *path = "shmem";
 	key_t key;
 	int count = 100;
 	
