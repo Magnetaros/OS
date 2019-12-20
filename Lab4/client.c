@@ -28,8 +28,7 @@ int main(){
 		sleep(1);	
 	}
 	printf("Closing shared memory\n");
-	shmdt(output);
-	shmctl(shmem, IPC_RMID, NULL);
+	shmdt(output);	
 
 	return 0;
 }

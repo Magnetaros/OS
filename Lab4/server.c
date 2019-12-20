@@ -46,6 +46,7 @@ int main()
 	sprintf(input, "END");
 	printf("Stoping writing process and closing shared memory\n");
 	shmdt(input);
+	shmctl(shmem, IPC_RMID, NULL);
 
 	if(remove(path) < 0)
 		perror("ERR DEL FILE\n");
