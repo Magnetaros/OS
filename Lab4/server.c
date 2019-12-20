@@ -5,7 +5,8 @@
 #include <sys/shm.h>
 #include <unistd.h>
 #include <time.h>
-#define SHMEM_BUFFER_SIZE 1024
+#define BUFFERSIZE 1024
+#define SHMEMPERM 0666
 
 int main()
 {
@@ -17,6 +18,8 @@ int main()
 	char *path = "shmem";
 	key_t key;
 	int count = 100;
+	struct tm *curr_time;
+	char stime[10];
 	
 	ptr = fopen(path, "w");
 	fclose(ptr);
@@ -25,21 +28,23 @@ int main()
 	if(key < 0)
 		perror("FTOK ERR\n");
 
-	shmem = shmget(key, SHMEM_BUFFER_SIZE, 0777 | IPC_CREAT | IPC_EXCL);
+	shmem = shmget(key, BUFFERSIZE, SHMEMPERM | IPC_CREAT | IPC_EXCL);
 	if(shmem < 0)
 		perror("SHMEM NOT FOUND\n");
 
 	input = (char*)shmat(shmem, NULL, 0);
-	printf("Writing...\n");
+	printf("Wriing...\n");
 	while(count)
 	{
 		timer = time(NULL);
-		sprintf(input, "pid = %d, time : %s", pid, ctime(&timer));
+		curr_time = localtime(&timer);
+		strftime(stime, 20, "%H:%M:%S\n", curr_time);
+		sprintf(input, "pid = %d, time : %s", pid, stime);
 		sleep(1);
 		count--;
 	}
 	sprintf(input, "END");
-	printf("Stoping writting process\n");
+	printf("Stoping writing process and closing shared memory\n");
 	shmdt(input);
 
 	if(remove(path) < 0)

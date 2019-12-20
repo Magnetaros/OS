@@ -4,7 +4,8 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#define SHMEM_BUFFER_SIZE 1024
+#define BUFFERSIZE 1024
+#define SHMEMPERM 0666
 
 int main(){
 	key_t key;
@@ -15,7 +16,7 @@ int main(){
 	key = ftok(path, 'S');
 	if(key < 0)
 		perror("FTOK ERR\n");
-	shmem = shmget(key, SHMEM_BUFFER_SIZE, 0777 | IPC_CREAT);
+	shmem = shmget(key, BUFFERSIZE, SHMEMPERM | IPC_CREAT);
 	if(shmem < 0)
 		perror("SHMEM NOT FOUND\n");
 	
@@ -26,7 +27,7 @@ int main(){
 		printf("%s", output);
 		sleep(1);	
 	}
-	printf("Closing Shared memory\n");
+	printf("Closing shared memory\n");
 	shmdt(output);
 	shmctl(shmem, IPC_RMID, NULL);
 
