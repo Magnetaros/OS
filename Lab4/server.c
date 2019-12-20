@@ -10,7 +10,6 @@
 
 int main()
 {
-	FILE *ptr = NULL;
 	pid_t pid = getpid();
 	time_t timer;
 	int shmem;
@@ -20,15 +19,12 @@ int main()
 	int count = 100;
 	struct tm *curr_time;
 	char stime[10];
-	
-	ptr = fopen(path, "w");
-	fclose(ptr);
 
 	key = ftok(path, 'S');
 	if(key < 0)
 		perror("FTOK ERR\n");
 
-	shmem = shmget(key, BUFFERSIZE, SHMEMPERM | IPC_CREAT | IPC_EXCL);
+	shmem = shmget(key, BUFFERSIZE, SHMEMPERM | IPC_CREAT);
 	if(shmem < 0)
 		perror("SHMEM NOT FOUND\n");
 
@@ -47,9 +43,6 @@ int main()
 	printf("Stoping writing process and closing shared memory\n");
 	shmdt(input);
 	shmctl(shmem, IPC_RMID, NULL);
-
-	if(remove(path) < 0)
-		perror("ERR DEL FILE\n");
 
 	return 0;
 }
