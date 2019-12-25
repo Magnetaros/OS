@@ -21,6 +21,11 @@ int main()
     }
 
     pid = fork();
+	if(pid < 0)
+	{
+		perror("FORKED\n");
+		exit(-1);
+	}
 
     while(1)
     {
@@ -35,18 +40,13 @@ int main()
             write(p_pipe[1], in_str, buffer_size * sizeof(char) + 1);
             sleep(1);
         }
-        else if(pid == 0)
+        else
         {
             time_t c_time = time(NULL);   
             read(p_pipe[0], in_str, 100 * sizeof(char));
             printf("Result:\n\t parent  %s", in_str);
             printf("\t child time : %s\n", ctime(&c_time));
             sleep(1);
-        }
-        else
-        {
-            printf("Forked!!!\n");
-            exit(1);
         }
     }
 }
